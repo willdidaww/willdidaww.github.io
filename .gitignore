@@ -10,6 +10,7 @@
 .DS_Store
 *.log
 
-# Versi Supabase (front-end): jangan commit config berisi key
+# Versi Supabase (front-end lokal): jangan commit config berisi key
 /web/config.js
-/docs/config.js
+# Catatan: docs/config.js SENGAJA di-commit agar GitHub Pages berfungsi.
+# anon key aman untuk publik (RLS yang mengamankan data). Jangan taruh service_role di sini.
