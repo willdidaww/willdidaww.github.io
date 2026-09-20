@@ -9,3 +9,7 @@
 /node_modules/
 .DS_Store
 *.log
+
+# Versi Supabase (front-end): jangan commit config berisi key
+/web/config.js
+/docs/config.js

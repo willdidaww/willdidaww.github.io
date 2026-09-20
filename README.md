@@ -4,7 +4,25 @@ Aplikasi manajemen biaya operasional bus Antar Kota Antar Provinsi (AKAP):
 rit, uang jalan, pengeluaran, pendapatan, perawatan, dokumen kendaraan, kas/kasbon,
 persetujuan, laporan, dan dashboard.
 
-## Stack
+## Dua versi tersedia
+
+Repo ini berisi **dua implementasi** yang bisa dipilih:
+
+| Versi | Folder | Backend | Kelebihan | Untuk siapa |
+|---|---|---|---|---|
+| **PHP + SQLite** (lengkap) | root (`public/`, `src/`, …) | Server PHP + file SQLite | Semua 17 modul, jalan tanpa dependensi | Dijalankan lokal / di host PHP |
+| **HTML/JS + Supabase** (Slice 1) | `web/` + `supabase/` | Supabase (Postgres + Auth + RLS) | Bisa di-preview lewat URL publik (GitHub Pages), tanpa server sendiri | Demo online, multi-user |
+
+- **Ingin preview online dengan URL?** Pakai versi Supabase → ikuti **[SETUP-SUPABASE.md](SETUP-SUPABASE.md)**.
+  Cakupan saat ini: auth+peran (RLS), dashboard, master bus/rute/kru, rit, pengeluaran, approval, area kru.
+- **Ingin semua modul & jalan lokal cepat?** Pakai versi PHP di bawah ini.
+
+Kedua versi memakai skema data & desain UI yang sama; versi Supabase adalah migrasi bertahap
+(Slice 1) dari versi PHP. Status per fitur versi PHP ada di **[CHECKLIST-STATUS.md](CHECKLIST-STATUS.md)**.
+
+---
+
+## Versi PHP — Stack
 
 Dibangun **tanpa framework eksternal** dan **tanpa dependensi yang perlu diunduh**,
 karena lingkungan build tidak punya akses internet (registry npm/Composer tidak dapat dijangkau,
