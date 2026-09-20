@@ -1,0 +1,10 @@
+{
+  "name": "Rit Saya — Kru AKAP",
+  "short_name": "Rit Kru",
+  "start_url": "/kru-app",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "description": "Aplikasi kru untuk input pengeluaran rit dengan dukungan offline.",
+  "icons": []
+}

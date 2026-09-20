@@ -1,0 +1,11 @@
+/.env
+/storage/app.sqlite
+/storage/app.sqlite-*
+/storage/uploads/*
+!/storage/uploads/.gitkeep
+/storage/logs/*
+!/storage/logs/.gitkeep
+/vendor/
+/node_modules/
+.DS_Store
+*.log

@@ -1,0 +1,69 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+/**
+ * CLI aplikasi: migrate, seed, fresh.
+ *
+ * Penggunaan:
+ *   php bin/console migrate   # buat tabel + view
+ *   php bin/console seed      # isi data awal
+ *   php bin/console fresh     # hapus db, migrate, lalu seed
+ */
+
+$config = require dirname(__DIR__) . '/src/bootstrap.php';
+
+use App\Core\App;
+
+$cmd = $argv[1] ?? 'help';
+
+function runMigrations(): void
+{
+    $db = App::db();
+    $migrations = require dirname(__DIR__) . '/database/migrations.php';
+    foreach ($migrations as $name => $sql) {
+        $db->pdo()->exec($sql);
+        echo "  migrasi: $name\n";
+    }
+    $views = require dirname(__DIR__) . '/database/views.php';
+    foreach ($views as $name => $sql) {
+        $db->pdo()->exec($sql);
+        echo "  view: $name\n";
+    }
+}
+
+switch ($cmd) {
+    case 'migrate':
+        echo "Menjalankan migrasi...\n";
+        runMigrations();
+        echo "Selesai.\n";
+        break;
+
+    case 'seed':
+        echo "Menjalankan seeder...\n";
+        (require dirname(__DIR__) . '/database/seed.php')();
+        echo "Selesai.\n";
+        break;
+
+    case 'fresh':
+        $dsn = (string) App::config('db.dsn');
+        if (str_starts_with($dsn, 'sqlite:')) {
+            $file = substr($dsn, strlen('sqlite:'));
+            foreach ([$file, $file . '-wal', $file . '-shm'] as $f) {
+                if (is_file($f)) { unlink($f); echo "  hapus $f\n"; }
+            }
+        }
+        echo "Membuat ulang skema...\n";
+        runMigrations();
+        echo "Menjalankan seeder...\n";
+        (require dirname(__DIR__) . '/database/seed.php')();
+        echo "Selesai.\n";
+        break;
+
+    default:
+        echo "Perintah tersedia:\n";
+        echo "  php bin/console migrate   Buat tabel & view\n";
+        echo "  php bin/console seed      Isi data awal\n";
+        echo "  php bin/console fresh     Reset DB + migrate + seed\n";
+        break;
+}
