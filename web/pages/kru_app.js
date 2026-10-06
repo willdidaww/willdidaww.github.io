@@ -1,6 +1,7 @@
 // Area Kru: lihat rit miliknya (RLS membatasi) + input pengeluaran + foto nota.
 import { sb, must, e, state, tgl, rupiah, badgeClass, toast } from '../lib.js';
 import { openModal } from '../modal.js';
+import { icon } from '../icons.js';
 
 export async function renderKruApp() {
   const app = document.getElementById('app');
@@ -13,7 +14,7 @@ export async function renderKruApp() {
 
   app.innerHTML = `
     <div class="kru-top" style="background:#0f172a;color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10">
-      <div><b>🚌 Rit Saya</b><br><span style="font-size:12px;color:#94a3b8">${e(state.profile?.nama || '')}</span></div>
+      <div><b>${icon('bus', { size: '18px' })} Rit Saya</b><br><span style="font-size:12px;color:#94a3b8">${e(state.profile?.nama || '')}</span></div>
       <button class="btn sm" id="btnLogout">Keluar</button>
     </div>
     <div style="padding:14px;max-width:560px;margin:0 auto">

@@ -1,5 +1,6 @@
 // Modal dialog sederhana untuk form create/edit.
 import { $, formData } from './lib.js';
+import { icon } from './icons.js';
 
 let overlay;
 
@@ -15,7 +16,7 @@ export function openModal(title, bodyHtml, onSubmit) {
   overlay.className = 'modal-overlay';
   overlay.innerHTML = `
     <div class="modal-card">
-      <div class="modal-head"><b>${title}</b><button class="btn ghost sm" id="mClose">✕</button></div>
+      <div class="modal-head"><b>${title}</b><button class="btn ghost sm" id="mClose" title="Tutup">${icon('x', { size: '16px' })}</button></div>
       <form id="modalForm" class="modal-body">${bodyHtml}
         <div class="btn-row" style="margin-top:16px;justify-content:flex-end">
           <button type="button" class="btn" id="mCancel">Batal</button>

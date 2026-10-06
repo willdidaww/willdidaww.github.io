@@ -3,6 +3,7 @@ import { sb, must, e, state, tgl, rupiah, badgeClass, toast, isManager } from '.
 import { shell, pageHead } from '../layout.js';
 import { openModal } from '../modal.js';
 import { pengeluaranForm } from './pengeluaran.js';
+import { icon } from '../icons.js';
 
 export async function renderRitList() {
   const content = shell('#/rit');
@@ -121,7 +122,7 @@ export async function renderRitDetail(id) {
   const locked = ['selesai', 'batal'].includes(rit.status);
 
   content.innerHTML = `
-    ${pageHead('Rit ' + rit.kode, `${e(rit.bus?.nopol)} · ${e(rit.rute?.asal)} → ${e(rit.rute?.tujuan)} · ${tgl(rit.tanggal)}`, '<a class="btn" href="#/rit">← Daftar</a>')}
+    ${pageHead('Rit ' + rit.kode, `${e(rit.bus?.nopol)} · ${e(rit.rute?.asal)} → ${e(rit.rute?.tujuan)} · ${tgl(rit.tanggal)}`, `<a class="btn" href="#/rit">${icon('arrowLeft', { size: '15px' })} Daftar</a>`)}
     <div class="grid grid-4">
       <div class="stat"><div class="label">Status</div><div class="value sm"><span class="badge ${badgeClass(rit.status)}">${e(rit.status)}</span></div></div>
       <div class="stat"><div class="label">Estimasi UJ</div><div class="value sm">${rupiah(rit.estimasi_uang_jalan)}</div></div>
@@ -141,7 +142,7 @@ export async function renderRitDetail(id) {
             <span class="tag">${e(p.sumber)}</span></div>
           <div class="muted" style="font-size:12px">${tgl(p.tanggal)} · ${e(p.keterangan || '')}
             ${p.liter ? ` · ${p.liter} L @ ${rupiah(p.harga_liter)}` : ''}
-            ${p.lampiran ? ` · <a href="${e(p.lampiran)}" target="_blank">📎 nota</a>` : ''}
+            ${p.lampiran ? ` · <a href="${e(p.lampiran)}" target="_blank">${icon('paperclip', { size: '12px' })} nota</a>` : ''}
             ${p.alasan_reject ? ` · <span style="color:var(--bad)">ditolak: ${e(p.alasan_reject)}</span>` : ''}</div>
         </div>`).join('') || '<div class="muted">Belum ada pengeluaran.</div>'}
       </div></div>

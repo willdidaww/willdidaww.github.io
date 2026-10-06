@@ -1,6 +1,7 @@
 // Dashboard ringkasan (gaya liquid glass). Data: rit, pengeluaran, SIM kru — semua Slice 1.
 import { sb, must, e, tgl, badgeClass, state } from '../lib.js';
 import { shell } from '../layout.js';
+import { icon } from '../icons.js';
 
 export async function renderDashboard() {
   const content = shell('#/');
@@ -28,7 +29,7 @@ export async function renderDashboard() {
   // Daftar "perlu tindakan" (actionable)
   const actions = [];
   if (menunggu) actions.push({
-    ico: '✅', bg: 'var(--warnbg)',
+    ico: 'checkCircle', color: 'var(--warn)', bg: 'var(--warnbg)',
     title: `${menunggu} pengeluaran menunggu approval`,
     sub: anomali ? `${anomali} di antaranya ditandai anomali` : 'Perlu ditinjau',
     href: '#/approval',
@@ -36,14 +37,14 @@ export async function renderDashboard() {
   simExpiring.slice(0, 3).forEach((s) => {
     const expired = new Date(s.sim_berlaku_sampai) < new Date();
     actions.push({
-      ico: '🪪', bg: expired ? 'var(--badbg)' : 'var(--warnbg)',
+      ico: 'idcard', color: expired ? 'var(--bad)' : 'var(--warn)', bg: expired ? 'var(--badbg)' : 'var(--warnbg)',
       title: `SIM ${e(s.nama)} ${expired ? 'sudah kedaluwarsa' : 'segera habis'}`,
       sub: `Berlaku sampai ${tgl(s.sim_berlaku_sampai)}`,
       href: '#/kru',
     });
   });
   if (ritBerjalan) actions.push({
-    ico: '🧭', bg: 'var(--mutedbg)',
+    ico: 'compass', color: 'var(--brand)', bg: 'var(--mutedbg)',
     title: `${ritBerjalan} rit sedang berjalan`,
     sub: 'Pantau pengeluaran & tutup saat tiba',
     href: '#/rit?status=berjalan',
@@ -52,28 +53,28 @@ export async function renderDashboard() {
   content.innerHTML = `
     <div class="hero">
       <div>
-        <h1>${sapaan()}, ${e(nama)} 👋</h1>
+        <h1>${sapaan()}, ${e(nama)} ${icon('wave', { size: '22px' })}</h1>
         <div class="sub">${hariIni()} · Ringkasan operasional armada</div>
       </div>
-      <a class="btn" href="#/rit">+ Kelola Rit</a>
+      <a class="btn" href="#/rit">${icon('plus', { size: '15px' })} Kelola Rit</a>
     </div>
 
     <div class="grid grid-4">
-      ${statCard('brand', '🧭', 'Rit Berjalan', ritBerjalan)}
-      ${statCard('', '🗂️', 'Rit Rencana', ritRencana)}
-      ${statCard(menunggu ? 'warn' : '', '✅', 'Menunggu Approval',
+      ${statCard('brand', 'compass', 'Rit Berjalan', ritBerjalan)}
+      ${statCard('', 'folder', 'Rit Rencana', ritRencana)}
+      ${statCard(menunggu ? 'warn' : '', 'checkCircle', 'Menunggu Approval',
         `${menunggu}${anomali ? ` <span class="badge bad" style="font-size:10px;vertical-align:middle">${anomali} anomali</span>` : ''}`)}
-      ${statCard(simExpiring.length ? 'bad' : '', '🪪', 'SIM Segera Habis', simExpiring.length)}
+      ${statCard(simExpiring.length ? 'bad' : '', 'idcard', 'SIM Segera Habis', simExpiring.length)}
     </div>
 
     <div class="grid grid-2">
       <div class="card"><div class="card-head">Perlu Tindakan</div><div class="card-body">
         ${actions.length ? actions.map((a) => `
           <a class="action-item" href="${a.href}" style="color:inherit">
-            <div class="ai-ico" style="background:${a.bg}">${a.ico}</div>
+            <div class="ai-ico" style="background:${a.bg};color:${a.color}">${icon(a.ico, { size: '18px' })}</div>
             <div class="ai-main"><b>${a.title}</b><div>${a.sub}</div></div>
-            <span class="muted">›</span>
-          </a>`).join('') : '<div class="empty" style="padding:28px">Tidak ada yang perlu ditindak. 🎉</div>'}
+            <span class="muted">${icon('chevronRight', { size: '16px' })}</span>
+          </a>`).join('') : `<div class="empty" style="padding:28px">${icon('party', { size: '18px' })} Tidak ada yang perlu ditindak.</div>`}
       </div></div>
 
       <div class="card"><div class="card-head">SIM Kru Mendekati Kedaluwarsa</div><div class="card-body">
@@ -96,9 +97,9 @@ export async function renderDashboard() {
     </div>`;
 }
 
-function statCard(variant, icon, label, value) {
+function statCard(variant, iconName, label, value) {
   return `<div class="stat ${variant}">
-    <div class="stat-icon">${icon}</div>
+    <div class="stat-icon">${icon(iconName, { size: '20px' })}</div>
     <div class="label">${label}</div>
     <div class="value">${value}</div>
   </div>`;

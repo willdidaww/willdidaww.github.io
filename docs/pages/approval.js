@@ -1,6 +1,7 @@
 // Persetujuan: daftar pengeluaran menunggu, filter, approve/reject (per item & batch), alasan wajib saat reject.
 import { sb, must, e, state, rupiah, toast } from '../lib.js';
 import { shell, pageHead } from '../layout.js';
+import { icon } from '../icons.js';
 
 export async function renderApproval() {
   const content = shell('#/approval');
@@ -22,8 +23,8 @@ export async function renderApproval() {
       <div class="filters">
         <label style="font-weight:400"><input type="checkbox" id="fAnomali" ${onlyAnomali ? 'checked' : ''} style="width:auto"> Hanya anomali</label>
         <div class="btn-row" style="margin-left:auto">
-          <button class="btn ok sm" id="btnApproveSel">✓ Setujui Terpilih</button>
-          <button class="btn bad sm" id="btnRejectSel">✕ Tolak Terpilih</button>
+          <button class="btn ok sm" id="btnApproveSel">${icon('check', { size: '14px' })} Setujui Terpilih</button>
+          <button class="btn bad sm" id="btnRejectSel">${icon('x', { size: '14px' })} Tolak Terpilih</button>
         </div>
       </div>
       <div class="table-wrap"><table>
@@ -32,12 +33,12 @@ export async function renderApproval() {
           <td><input type="checkbox" class="chk" value="${r.id}"></td>
           <td>${r.rit ? `<a href="#/rit-detail/${r.rit_id}">${e(r.rit.kode)}</a><br><span class="muted">${e(r.rit.bus?.nopol)}</span>` : '<span class="tag">non-rit</span>'}</td>
           <td>${e(r.kategori?.nama)}<br><span class="muted" style="font-size:11px">${e(r.keterangan || '')}</span></td>
-          <td class="num mono">${rupiah(r.nominal)}${r.lampiran ? `<br><a href="${e(r.lampiran)}" target="_blank" style="font-size:11px">📎 nota</a>` : ''}</td>
+          <td class="num mono">${rupiah(r.nominal)}${r.lampiran ? `<br><a href="${e(r.lampiran)}" target="_blank" style="font-size:11px">${icon('paperclip', { size: '12px' })} nota</a>` : ''}</td>
           <td>${r.flag_anomali ? '<span class="badge bad">anomali</span>' : '<span class="badge muted">normal</span>'}</td>
           <td class="right"><div class="btn-row" style="justify-content:flex-end">
-            <button class="btn sm ok" data-approve="${r.id}">✓</button>
-            <button class="btn sm bad" data-reject="${r.id}">✕</button>
-          </div></td></tr>`).join('') || '<tr><td colspan="6" class="empty">Tidak ada yang menunggu approval. 🎉</td></tr>'}</tbody>
+            <button class="btn sm ok" data-approve="${r.id}" title="Setujui">${icon('check', { size: '14px' })}</button>
+            <button class="btn sm bad" data-reject="${r.id}" title="Tolak">${icon('x', { size: '14px' })}</button>
+          </div></td></tr>`).join('') || `<tr><td colspan="6" class="empty">${icon('party', { size: '18px' })} Tidak ada yang menunggu approval.</td></tr>`}</tbody>
       </table></div>
     </div></div>`;
 
